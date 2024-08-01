@@ -1,20 +1,10 @@
-image_search_task:
+image_research_task:
   description: >
-    Find all images related to {topic} on the internet.
+    1. Search for images related to {topic} on the internet. 
+    2. Generate descriptions and file names for all the images. 
+    3. Download them and save them in a Redis database.
+    4. Upload new images to Google Drive.
+    5. Output the names and descriptions of new images found. 
   expected_output: >
-    A JSON string with image urls and descriptive filenames and a count of the total number of image urls.
-
-image_download_task:
-  description: >
-    Take a list of image URLs and filenames. Download them all and save them in their corresponding filenames.
-  expected_output:
-    The total number of images that you received in your prompt and the total number of images that you were able to download successfully.
-    The list of images along with their corresponding filenames and download status.
-
-file_upload_task:
-  description: >
-    Take a list of filenames. Upload them all to Google Drive
-  expected_output:
-    The total number of files that you received in your prompt and the total number of files that you were able to upload successfully.
-    The list of files along with their corresponding filenames and upload status.
+    A JSON string with image urls and descriptive filenames, and whether the image is new and a count of the total number of new images.
 

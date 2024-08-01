@@ -7,12 +7,18 @@ from typing import List
 
 import google.auth
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaIoBaseUpload
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+import redis
+from PIL import Image
+import io
 
 from crewai_tools import BaseTool
+
+# Connect to Redis
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # If modifying these SCOPES, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
@@ -65,7 +71,8 @@ class GoogleDriveUploader(BaseTool):
         if items:
             return items[0]['id']
         return None
-    
+
+
     def create_folder(self, folder_name, parent_id=None):
         """Creates a folder in Google Drive and returns the folder ID."""
 
@@ -87,29 +94,18 @@ class GoogleDriveUploader(BaseTool):
         return folder.get('id')
     
 
-    def compute_file_hash(self, file_path):
-        """Computes the SHA-256 hash of the specified file."""
-
-        sha256_hash = hashlib.sha256()
-
-        with open(file_path, "rb") as f:
-            for byte_block in iter(lambda: f.read(4096), b""):
-                sha256_hash.update(byte_block)
-        return sha256_hash.hexdigest()
-
-
     def find_file_by_hash(self, folder_id, file_hash):
         """Finds a file in Google Drive by its hash in the specified folder."""
 
         #query = f"properties has {{ key='sha256Checksum' and value='{file_hash}' }}"
-        query = ""
+        query = "mimeType != 'application/vnd.google-apps.folder'"
 
         results = self._service.files().list(
             q=query,
             spaces='drive',
             #fields='*',
             fields='files(id, name, sha256Checksum, properties)',
-            pageSize=10
+            pageSize=1000
         ).execute()
         
         items = results.get('files', [])
@@ -119,19 +115,16 @@ class GoogleDriveUploader(BaseTool):
         return None
 
 
-    def upload_files(self, file_paths, folder_id):
-        """Uploads a list of files to Google Drive in the specified folder."""
+    def upload_files(self, file_names, hash_values, folder_id):
+        """Takes a list of file names and their corresponding hash values. Uploads them to Google Drive."""
 
         successes = []
         failures = []
 
-        for file_path in file_paths:
+        for file_name, file_hash in zip(file_names, hash_values):
 
             try:
 
-                file_name = os.path.basename(file_path)
-
-                file_hash = self.compute_file_hash(f"downloads/{file_path}")
                 if self.find_file_by_hash(folder_id, file_hash):
                     raise Exception(f"This file already exists on Google Drive in the folder {folder_id} with {file_hash}. Skipping...")
 
@@ -140,22 +133,28 @@ class GoogleDriveUploader(BaseTool):
                     'parents': [folder_id],
                     'hash': file_hash
                 }
-                media = MediaFileUpload(f"downloads/{file_path}", resumable=True)
+                image_data = r.get(file_hash)
+                media = MediaIoBaseUpload(io.BytesIO(image_data), mimetype='image/jpeg')
                 file = self._service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-                successes.append(file_path)
+                successes.append(file_names)
             except Exception as e:
-                failures.append({"file":file_path, "error_message":e})
+                failures.append({"file":file_names, "error_message":e})
         
         return successes, failures
 
             
 
-    def _run(self, file_paths: List[str]):
+    def _run(self, file_names: List[str], hash_values: List[str]) -> dict:
+
+        result = {"successes": [], "failures": []}
+
+        if len(file_names) == 0 or len(hash_values) == 0:
+            return result
         
         self._service = self.authenticate()
 
         folder_id = self.create_folder("test-folder-1")
-        s,f = self.upload_files(file_paths, folder_id)
+        s,f = self.upload_files(file_names, hash_values, folder_id)
 
         return {"successes": s, "failures": f}
 

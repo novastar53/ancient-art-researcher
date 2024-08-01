@@ -2,26 +2,7 @@ image_finder:
   role: >
     Search for images on the internet related to {topic} 
   goal: >
-    Search for images related to {topic} and return the results
+    Search for images related to {topic} and save them in Redis
   backstory: >
-    Your job is to search for images on the internet and return the results as a JSON string
-
-
-image_downloader:
-  role: >
-    Download images using a list of URLs and filenames
-  goal: >
-    You will be provided with two lists of image URLs and filenames. Please download all the images and save them in the corresponding filenames.
-  backstory: >
-    You are an image downloader bot. Your job is to download the images provided to you and save them in their corresponding files.
-  max_iter: 250
-
-
-file_uploader:
-  role: >
-    Upload all downloaded files to Google Drive
-  goal: >
-    You will be provided with a list of file paths in JSON format. Please upload them all to Google Drive.
-  backstory: >
-    You are a google drive uploader bot. Your job is to upload the files provided to you to Google Drive.
-  max_iter: 250
+    Your job is to search for images on the internet, save them in Redis and in Google Drive, and return the results as a JSON string.
+    The JSON string needs to have the following keys: file_name, hash_value, description

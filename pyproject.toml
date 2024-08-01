@@ -11,8 +11,10 @@ google-auth = "^2.32.0"
 google-auth-oauthlib = "^1.2.1"
 google-auth-httplib2 = "^0.2.0"
 google-api-python-client = "^2.139.0"
+redis = "^5.0.8"
 
 [tool.poetry.scripts]
+redis = "history_research_assistant.manage_redis:start_redis_server"
 history_research_assistant = "history_research_assistant.main:run"
 train = "history_research_assistant.main:train"
 replay = "history_research_assistant.main:replay"

@@ -12,7 +12,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'Statues from gupta period India'
+        'topic': 'Gupta period coins'
     }
     HistoryResearchAssistantCrew().crew().kickoff(inputs=inputs)
 

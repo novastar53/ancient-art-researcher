@@ -27,48 +27,18 @@ class HistoryResearchAssistantCrew():
 	def image_finder(self) -> Agent:
 		return Agent(
 			config=self.agents_config['image_finder'],
-			tools=[image_search_tool],
+			tools=[image_search_tool, image_downloader_tool, google_drive_uploader_tool],
 			verbose=True
 		)
 	
-	@agent
-	def image_downloader(self) -> Agent:
-		return Agent(
-			config=self.agents_config['image_downloader'],
-			tools=[image_downloader_tool],
-			verbose=True
-		)
-
-	@agent
-	def file_uploader(self) -> Agent:
-		return Agent(
-			config=self.agents_config['file_uploader'],
-			tools=[google_drive_uploader_tool],
-			verbose=True
-		)
-
-
 	@task
-	def image_search_task(self) -> Task:
+	def image_research_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['image_search_task'],
-			agent=self.image_finder()
+			config=self.tasks_config['image_research_task'],
+			agent=self.image_finder(),
+			tools=[image_downloader_tool, image_search_tool, google_drive_uploader_tool],
 		)
 	
-	@task
-	def image_download_task(self) -> Task:
-		return Task(
-			config=self.tasks_config["image_download_task"],
-			agent=self.image_downloader()
-		)
-	
-	@task
-	def file_upload_task(self) ->Task:
-		return Task(
-			config=self.tasks_config['file_upload_task'],
-			agent=self.file_uploader()
-		)
-
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the HistoryResearchAssistant crew"""

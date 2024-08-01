@@ -30,7 +30,8 @@ poetry install
 To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 
 ```bash
+poetry run redis
 poetry run history_research_assistant
 ```
 
-This command initializes the history-research-assistant Crew, assembling the agents and assigning them tasks as defined in your configuration.
+This starts a redis server, initializes the history-research-assistant Crew, assembling the agents and assigning them tasks.
