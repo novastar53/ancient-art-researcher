@@ -3,7 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 
 # Uncomment the following line to use an example of a custom tool
 from history_research_assistant.tools.image_downloader import ImagesDownloader
-from history_research_assistant.tools.google_drive_uploader import GoogleDriveUploader
+from history_research_assistant.tools.image_uploader import ImageUploader
 
 # Check our tools documentations for more information on how to use them
 from crewai_tools import SerperDevTool
@@ -15,7 +15,7 @@ image_search_tool = SerperDevTool(
 )
 
 image_downloader_tool = ImagesDownloader()
-google_drive_uploader_tool = GoogleDriveUploader()
+image_uploader_tool = ImageUploader()
 
 @CrewBase
 class HistoryResearchAssistantCrew():
@@ -27,7 +27,7 @@ class HistoryResearchAssistantCrew():
 	def image_finder(self) -> Agent:
 		return Agent(
 			config=self.agents_config['image_finder'],
-			tools=[image_search_tool, image_downloader_tool, google_drive_uploader_tool],
+			tools=[image_search_tool, image_downloader_tool, image_uploader_tool],
 			verbose=True
 		)
 	
@@ -36,7 +36,7 @@ class HistoryResearchAssistantCrew():
 		return Task(
 			config=self.tasks_config['image_research_task'],
 			agent=self.image_finder(),
-			tools=[image_downloader_tool, image_search_tool, google_drive_uploader_tool],
+			tools=[image_downloader_tool, image_search_tool, image_uploader_tool],
 		)
 	
 	@crew
