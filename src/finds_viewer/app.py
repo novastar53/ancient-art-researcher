@@ -13,13 +13,13 @@ app = Flask(__name__)
 def list_images():
     client = storage.Client()
     bucket = client.bucket(os.environ["BUCKET_NAME"])
-    blobs = bucket.list_blobs()
 
-    image_urls = []
-    for blob in blobs:
-        if blob.content_type.startswith('image/'):
-            image_urls.append(blob.public_url)
-    
+    # Filter out the images and sort them by most recent.
+    blobs = bucket.list_blobs()
+    blobs = [b for b in blobs if b.content_type.startswith("image/")]
+    blobs = sorted(blobs, key=lambda x: x.time_created, reverse=True)
+    image_urls = [b.public_url for b in blobs]
+
     return image_urls
 
 @app.route('/')
