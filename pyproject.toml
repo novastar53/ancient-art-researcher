@@ -12,6 +12,7 @@ google-auth-oauthlib = "^1.2.1"
 google-auth-httplib2 = "^0.2.0"
 google-api-python-client = "^2.139.0"
 redis = "^5.0.8"
+flask = "^3.0.3"
 
 [tool.poetry.scripts]
 redis = "history_research_assistant.manage_redis:start_redis_server"
