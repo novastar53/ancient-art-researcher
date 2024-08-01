@@ -1,0 +1,36 @@
+# HistoryResearchAssistant Crew
+
+Welcome to the HistoryResearchAssistant Crew project. This project runs an agent which automates one of my major hobbies: Researching historical artifacts on the internet and blogging about them. This agent trawls the web, searching for new images of ancient artifacts to add to its collection. It then researches any new finds and produces reports based on the info that it has collected. It allows me to review its output periodically and then direct it to create short blog posts that references one or more of the images. 
+
+## Installation
+
+Ensure you have Python >=3.10 <=3.13 installed on your system. This project uses [Poetry](https://python-poetry.org/) for dependency management and package handling, offering a seamless setup and execution experience.
+
+First, if you haven't already, install Poetry:
+
+```bash
+pip install poetry
+```
+
+Next, navigate to your project directory and install the dependencies:
+
+1. First lock the dependencies and then install them:
+```bash
+poetry lock
+```
+```bash
+poetry install
+```
+### Customizing
+
+**Add your `OPENAI_API_KEY` into the `.env` file**
+
+## Running the Project
+
+To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+
+```bash
+poetry run history_research_assistant
+```
+
+This command initializes the history-research-assistant Crew, assembling the agents and assigning them tasks as defined in your configuration.

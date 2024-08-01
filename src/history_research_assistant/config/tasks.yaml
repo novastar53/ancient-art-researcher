@@ -1,0 +1,20 @@
+image_search_task:
+  description: >
+    Find all images related to {topic} on the internet.
+  expected_output: >
+    A JSON string with image urls and descriptive filenames and a count of the total number of image urls.
+
+image_download_task:
+  description: >
+    Take a list of image URLs and filenames. Download them all and save them in their corresponding filenames.
+  expected_output:
+    The total number of images that you received in your prompt and the total number of images that you were able to download successfully.
+    The list of images along with their corresponding filenames and download status.
+
+file_upload_task:
+  description: >
+    Take a list of filenames. Upload them all to Google Drive
+  expected_output:
+    The total number of files that you received in your prompt and the total number of files that you were able to upload successfully.
+    The list of files along with their corresponding filenames and upload status.
+

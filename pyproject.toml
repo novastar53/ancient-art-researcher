@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "history_research_assistant"
+version = "0.1.0"
+description = "history-research-assistant using crewAI"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = { extras = ["tools"], version = "^0.41.1" }
+google-auth = "^2.32.0"
+google-auth-oauthlib = "^1.2.1"
+google-auth-httplib2 = "^0.2.0"
+google-api-python-client = "^2.139.0"
+
+[tool.poetry.scripts]
+history_research_assistant = "history_research_assistant.main:run"
+train = "history_research_assistant.main:train"
+replay = "history_research_assistant.main:replay"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
