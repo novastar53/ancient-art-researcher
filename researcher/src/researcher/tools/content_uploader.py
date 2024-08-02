@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 from crewai_tools import BaseTool
 
-from history_research_assistant.utils.types import Content
+from researcher.utils.types import Content
 
 # Initialize Firestore
 db = firestore.Client(project="history-research-assistant", database="history-research-database")

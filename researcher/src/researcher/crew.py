@@ -1,9 +1,11 @@
+import os
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
-from history_research_assistant.tools.image_downloader import ImagesDownloader
-from history_research_assistant.tools.image_uploader import ImageUploader
-from history_research_assistant.tools.content_uploader import ContentUploader
+from researcher.tools.image_downloader import ImagesDownloader
+from researcher.tools.image_uploader import ImageUploader
+from researcher.tools.content_uploader import ContentUploader
 
 from crewai_tools import (
     SerperDevTool,
@@ -11,21 +13,19 @@ from crewai_tools import (
 )
 
 
-
+# Initialize tools
 image_search_tool = SerperDevTool(
     search_url="https://google.serper.dev/images",
     n_results=3,
 )
-
-website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key="fc-b73d73821eba472287dbeeb35050ac09")
-
+website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key=os.environ['FIRECRAWL_API_KEY'])
 image_downloader_tool = ImagesDownloader()
 image_uploader_tool = ImageUploader()
 content_uploader_tool = ContentUploader()
 
 @CrewBase
-class HistoryResearchAssistantCrew():
-	"""HistoryResearchAssistant crew"""
+class ResearcherCrew():
+	"""Researcher crew"""
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 
@@ -47,7 +47,7 @@ class HistoryResearchAssistantCrew():
 	
 	@crew
 	def crew(self) -> Crew:
-		"""Creates the HistoryResearchAssistant crew"""
+		"""Creates the Ancient Art Research crew"""
 		return Crew(
 			agents=self.agents, # Automatically created by the @agent decorator
 			tasks=self.tasks, # Automatically created by the @task decorator

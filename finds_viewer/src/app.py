@@ -39,9 +39,9 @@ def list_images():
     
     # Generate input data for the template engine
     images = [{"url": b.public_url, 
-               "original_url": d.get("original_url"),
-               "title": d.get("title"), 
-               "description": d.get("generated_description")} for b,d in zip(blobs,content) if d is not None ]
+               "original_url": d.get("original_url") if d else "",
+               "title": d.get("title") if d else "", 
+               "description": d.get("generated_description") if d else ""} for b,d in zip(blobs,content) ]
 
     return images
 

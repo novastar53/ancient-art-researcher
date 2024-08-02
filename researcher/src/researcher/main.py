@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-from history_research_assistant.crew import HistoryResearchAssistantCrew
+from researcher.crew import ResearcherCrew
 
 def run():
     """
@@ -9,7 +9,7 @@ def run():
     inputs = {
         'topic': 'Sculptures excavated from the Satvahana capital at Mansar'
     }
-    HistoryResearchAssistantCrew().crew().kickoff(inputs=inputs)
+    ResearcherCrew().crew().kickoff(inputs=inputs)
 
 
 if __name__=="__main__":
