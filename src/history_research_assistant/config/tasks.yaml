@@ -1,10 +1,20 @@
 image_research_task:
   description: >
     1. Search for images related to {topic} on the internet. 
-    2. Generate descriptions and file names for all the images. 
-    3. Download them and save them in a Redis database.
-    4. Upload new images to Google Drive.
-    5. Output the names and descriptions of new images found. 
+    2. Generate file names for all the images. 
+    3. Download them and save them in a Redis cache.
+    4. Upload new images to Google Cloud. From here on, ignore the images that failed to upload.
+    5. Scrape the source website for information about every uploaded image. Wait around 30000 seconds for the scrape tool to generate data. Generate a short paragraph (100 words) describing each image from the scraped content.
+    6. Upload the generated content for each uploaded image to Firestore.
   expected_output: >
-    A JSON string with image urls and descriptive filenames, and whether the image is new and a count of the total number of new images.
+    A JSON string with:
+    1. image urls, "original_url"
+    2. descriptive filename, "file_name"
+    4. a one line description, "title"
+    5. a short paragraph (100 words) describing the image, generated using the scraped content as context, "generated_description"
+    6. the name of the source website, "source"
+    7. the url of the source website, "source_url"
+    7. the sha256 hash of the image, "sha256_hash"
+    for each uploaded image.
+    
 

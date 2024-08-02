@@ -1,12 +1,15 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
-# Uncomment the following line to use an example of a custom tool
 from history_research_assistant.tools.image_downloader import ImagesDownloader
 from history_research_assistant.tools.image_uploader import ImageUploader
+from history_research_assistant.tools.content_uploader import ContentUploader
 
-# Check our tools documentations for more information on how to use them
-from crewai_tools import SerperDevTool
+from crewai_tools import (
+    SerperDevTool,
+	FirecrawlScrapeWebsiteTool
+)
+
 
 
 image_search_tool = SerperDevTool(
@@ -14,8 +17,11 @@ image_search_tool = SerperDevTool(
     n_results=3,
 )
 
+website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key="fc-b73d73821eba472287dbeeb35050ac09")
+
 image_downloader_tool = ImagesDownloader()
 image_uploader_tool = ImageUploader()
+content_uploader_tool = ContentUploader()
 
 @CrewBase
 class HistoryResearchAssistantCrew():
@@ -27,7 +33,7 @@ class HistoryResearchAssistantCrew():
 	def image_finder(self) -> Agent:
 		return Agent(
 			config=self.agents_config['image_finder'],
-			tools=[image_search_tool, image_downloader_tool, image_uploader_tool],
+			tools=[image_search_tool, image_downloader_tool, image_uploader_tool, content_uploader_tool, website_scrape_tool],
 			verbose=True
 		)
 	
@@ -36,7 +42,7 @@ class HistoryResearchAssistantCrew():
 		return Task(
 			config=self.tasks_config['image_research_task'],
 			agent=self.image_finder(),
-			tools=[image_downloader_tool, image_search_tool, image_uploader_tool],
+			tools=[image_downloader_tool, image_search_tool, image_uploader_tool, content_uploader_tool, website_scrape_tool],
 		)
 	
 	@crew

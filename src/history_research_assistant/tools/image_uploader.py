@@ -30,25 +30,29 @@ class ImageUploader(BaseTool):
     def upload_files(self, file_names, hash_values ) -> List[dict]:
         """Takes a list of file names and their corresponding hash values. Uploads them to Google Cloud Storage."""
 
+        # Get a list of existing files' hash values 
+        existing_hashes = set([b.metadata.get("sha256hash") for b in bucket.list_blobs()])
+
         results = []
         for file_name, file_hash in zip(file_names, hash_values):
 
-            image = r.get(file_hash)
-            existing_blob_name = f"{file_hash}-{file_name}"
-
-            blob = bucket.blob(existing_blob_name)
-
-            if blob.exists():
-                results.append({"file_name": existing_blob_name, "success": False, "error_message": "file exists in bucket"})
+            if file_hash in existing_hashes:
+                results.append({"file_name": file_name, "success": False, "error_message": "File exists in bucket"})
                 continue
 
             # Upload the file's content to Google Cloud Storage
+            blob = bucket.blob(file_name)
+            blob.metadata = {
+                "sha256hash": file_hash
+            }
+            image = r.get(file_hash)
             mime_type, _ = mimetypes.guess_type(file_name)
             blob.upload_from_string(image, content_type=mime_type)
+
             # Make the blob publicly accessible
             blob.make_public()
 
-            results.append({"file_name": existing_blob_name, "success": True, "error_message": None})
+            results.append({"file_name": file_name, "success": True, "error_message": None})
 
         return results
 
