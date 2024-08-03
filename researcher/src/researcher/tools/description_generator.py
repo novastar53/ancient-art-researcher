@@ -21,6 +21,13 @@ from researcher.utils.types import ImageInfo
 
 _firecrawl = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_API_KEY"))
 
+_text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=0,
+            length_function=len,
+            is_separator_regex=False
+        )
+
 _embed_model = FastEmbedEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
 #_chat_model = ChatGroq(temperature=0,
@@ -53,14 +60,18 @@ class DescriptionGenerator(BaseTool):
 
 
     def _scrape(self, url: str):
-        options = {
-            "extractorOptions": {},
-            "pageOptions": {
-                'onlyMainContent': True,
-            },
-            "timeout": 40000,
-        }
-        return _firecrawl.scrape_url(url, options)["content"]
+
+        try:
+            options = {
+                "extractorOptions": {},
+                "pageOptions": {
+                    'onlyMainContent': True,
+                },
+                "timeout": 40000,
+            }
+            return _firecrawl.scrape_url(url, options)["content"]
+        except:
+            return ""
 
 
     def _run(self, image_info: ImageInfo, output_num_words: int) -> str:
@@ -76,38 +87,34 @@ class DescriptionGenerator(BaseTool):
 
         """
 
+        # Scrape all the content from the image source website
+        scraped_content = self._scrape(image_info.link)        
+
         # Naively chunk the document into sections of similar length
-        #text_splitter = RecursiveCharacterTextSplitter(
-        #    chunk_size=1000,
-        #    chunk_overlap=0,
-        #    length_function=len,
-        #    is_separator_regex=False
-        #)
-        #aive_chunks = text_splitter.split_documents(documents)
+        naive_chunks = _text_splitter.split_text(scraped_content)
 
         # Embed the chunks using an embedding model
-        #naive_chunk_vectorstore = Chroma.from_documents(naive_chunks, embedding=self._embed_model)
-        #aive_chunk_retriever = naive_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5})
+        naive_chunk_vectorstore = Chroma.from_texts(naive_chunks, embedding=_embed_model)
+        naive_chunk_retriever = naive_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5},)
 
-        # Embed the image title 
 
         # Find the most relevant chunk using a similarity metric 
+        relevant_chunks = naive_chunk_retriever.get_relevant_documents(f"image title: {image_info.title}, image source: {image_info.source}")
 
         # Find the chunk with the image URL inside it
 
         # Concat the two chunks
+        relevant_content = "\n".join([r.page_content  for r in relevant_chunks])
 
         # Generate a prompt for the (expensive) content generation model
-
-        scraped_content = self._scrape(image_info.link)        
 
         prompt_args = {
             "length": str(output_num_words),
             "title": image_info.title,
             "image_url": image_info.source,
             "source_url": image_info.link,
-            "content": scraped_content         
-            }
+            "content": relevant_content         
+        }
 
         def _get_prompt():
             return self._rag_template.format(**prompt_args)
