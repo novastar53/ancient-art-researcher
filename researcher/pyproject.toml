@@ -5,7 +5,7 @@ description = "Ancient art researcher"
 authors = ["Vikram Pawar <pvikram035@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<=3.13"
+python = ">=3.10,<3.13"
 crewai = { extras = ["tools"], version = "^0.41.1" }
 google-auth = "^2.32.0"
 google-auth-oauthlib = "^1.2.1"
@@ -15,6 +15,8 @@ redis = "^5.0.8"
 flask = "^3.0.3"
 google-cloud-firestore = "^2.17.0"
 firecrawl-py = "^0.0.20"
+langchain-groq = "^0.1.9"
+fastembed = "^0.3.4"
 
 [tool.poetry.scripts]
 redis = "researcher.manage_redis:start_redis_server"
