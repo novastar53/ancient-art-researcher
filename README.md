@@ -34,4 +34,4 @@ poetry run redis
 poetry run history_research_assistant
 ```
 
-This starts a redis server, initializes the history-research-assistant Crew, assembling the agents and assigning them tasks.
+This starts a redis server, initializes the Ancient Art Researcher Crew, assembling the agents and assigning them tasks.

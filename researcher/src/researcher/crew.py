@@ -26,6 +26,7 @@ content_uploader_tool = ContentUploader()
 @CrewBase
 class ResearcherCrew():
 	"""Researcher crew"""
+
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 

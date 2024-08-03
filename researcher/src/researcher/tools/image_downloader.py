@@ -33,19 +33,20 @@ class ImagesDownloader(BaseTool):
                 response = requests.get(url, headers=headers)
                 
                 # Check if the request was successful
+                new_image = False
                 if response.status_code == 200:
                     # Open a file in binary write mode and write the content of the image
                     image_data = response.content
                     image_hash = hashlib.sha256(image_data).hexdigest()
-                    new_image = False
                     if not r.exists(image_hash):
-                        new_image = True
                         r.set(image_hash, image_data)
-                    results.append({"url":url, "file_name":file_name, "hash_value":image_hash, "error_message": None, "new": new_image, "success": True})
+                        results.append({"url":url, "file_name":file_name, "hash_value":image_hash, "error_message": None, "new": True, "success": True})
+                    else:
+                        results.append({"url":url, "file_name":file_name, "hash_value":image_hash, "error_message": None, "new": False, "success": True})
                 else:
-                    results.append({"url":url, "file_name":file_name, "hash_value": None, "error_message": response.status_code, "new": new_image, "success": False})
+                    results.append({"url":url, "file_name":file_name, "hash_value": None, "error_message": response.status_code, "new": False, "success": False})
             except ValueError as e:
-                results.append({"url":url, "file_name":file_name, "hash_value": None, "error_message": e, "new": new_image, "success": False})
+                results.append({"url":url, "file_name":file_name, "hash_value": None, "error_message": e, "new": False, "success": False})
 
         
         return results
