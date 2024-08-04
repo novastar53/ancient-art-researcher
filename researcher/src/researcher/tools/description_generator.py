@@ -8,6 +8,9 @@ from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_openai.embeddings import OpenAIEmbeddings
+
 
 
 from groq import Groq
@@ -91,20 +94,29 @@ class DescriptionGenerator(BaseTool):
         scraped_content = self._scrape(image_info.link)        
 
         # Naively chunk the document into sections of similar length
-        naive_chunks = _text_splitter.split_text(scraped_content)
+        #naive_chunks = _text_splitter.split_text(scraped_content)
 
-        # Embed the chunks using an embedding model
-        naive_chunk_vectorstore = Chroma.from_texts(naive_chunks, embedding=_embed_model)
-        naive_chunk_retriever = naive_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5},)
+        # Smartly chunk the document using semantic chunking
+        semantic_chunker = SemanticChunker(_embed_model, breakpoint_threshold_type="percentile")
+        semantic_chunks = semantic_chunker.create_documents([scraped_content])
 
+        # Embed the naive chunks using an embedding model
+        #naive_chunk_vectorstore = Chroma.from_texts(naive_chunks, embedding=_embed_model)
+        #naive_chunk_retriever = naive_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5},)
+
+        # Embed the semantic chunks using an embedding mdoel
+        semantic_chunk_vectorstore = Chroma.from_documents(semantic_chunks, embedding=_embed_model)
+        semantic_chunk_retriever = semantic_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5})
 
         # Find the most relevant chunk using a similarity metric 
-        relevant_chunks = naive_chunk_retriever.get_relevant_documents(f"image title: {image_info.title}, image source: {image_info.source}")
+        query_str = f"image title: {image_info.title}, image source: {image_info.source}"
+        #naive_relevant_chunks = naive_chunk_retriever.invoke(query_str)
+        semantic_relevant_chunks = semantic_chunk_retriever.invoke(query_str)
 
-        # Find the chunk with the image URL inside it
+        # TODO: Find the chunk with the image URL inside it
 
         # Concat the two chunks
-        relevant_content = "\n".join([r.page_content  for r in relevant_chunks])
+        relevant_content = "\n".join([r.page_content  for r in semantic_relevant_chunks])
 
         # Generate a prompt for the (expensive) content generation model
 

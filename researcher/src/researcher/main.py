@@ -7,7 +7,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'Sculpture from ancient Punjab'
+        'topic': 'Sculpture from ancient Rajasthan'
     }
     ResearcherCrew().crew().kickoff(inputs=inputs)
 
