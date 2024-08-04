@@ -2,6 +2,10 @@
 
 Welcome to the Ancient Art Research Assistant project. This project runs an agent which automates one of my major hobbies: Researching historical art on the internet and blogging about them. This agent searches the web for new images of ancient artifacts to add to its collection. It then researches any new finds and produces reports based on the info that it has collected. It allows me to review its output periodically and then direct it to create short blog posts that references one or more of the images. 
 
+## Live Demo
+
+A a demo of the app can be accessed [here](https://finds-viewer-uwrcgo4b7q-ue.a.run.app/).
+
 ## Installation
 
 Ensure you have Python >=3.10 <=3.13 installed on your system. This project uses [Poetry](https://python-poetry.org/) for dependency management and package handling, offering a seamless setup and execution experience.
