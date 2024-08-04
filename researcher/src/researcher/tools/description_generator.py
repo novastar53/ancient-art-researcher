@@ -48,8 +48,10 @@ class DescriptionGenerator(BaseTool):
 
 
     _rag_template = """\
-    Use the context to gen erate a {length} word description of an image based on content
-    taken from the image's source website.
+    Use the context to gen erate a {length} word description of an image of an ancient artifact 
+    or artwork based on content taken from the image's source website. The description should always 
+    mention the name of the object in the image, its find location, the period or year when it was made, 
+    and the current location of the image, if that information is present in the source website. 
 
     Image Details:
     - Title: {title}
