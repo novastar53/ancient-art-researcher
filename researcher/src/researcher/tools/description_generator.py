@@ -79,13 +79,14 @@ class DescriptionGenerator(BaseTool):
             return ""
 
 
-    def _run(self, image_info: ImageInfo, output_num_words: int) -> str:
+    def _run(self, image_info: ImageInfo, output_num_words: int, num_chunks: int = 5) -> str:
         """
         Generates descriptions from metadata and source website content.
 
         Parameters:
         Image_info (ImageInfo): Metadata about the image
         output_num_words: The number of words to generate
+        num_chunks: The number of relevant chunks to use as context. Try reducing it to create a shorter context window if the LLM requests fewer tokens.
 
         Returns:
         str: The generated output
@@ -108,7 +109,7 @@ class DescriptionGenerator(BaseTool):
 
         # Embed the semantic chunks using an embedding mdoel
         semantic_chunk_vectorstore = Chroma.from_documents(semantic_chunks, embedding=_embed_model)
-        semantic_chunk_retriever = semantic_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5})
+        semantic_chunk_retriever = semantic_chunk_vectorstore.as_retriever(search_kwargs={"k" : num_chunks})
 
         # Find the most relevant chunk using a similarity metric 
         query_str = f"image title: {image_info.title}, image source: {image_info.source}"

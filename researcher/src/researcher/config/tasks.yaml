@@ -13,6 +13,7 @@ image_research_task:
         sha256_hash: the image hash value obtained from the Redis tool
         source: the source field from the search results
         title: the title field from the search results
+    If you encouter any errors or exceptions in the process, analyze them, reflect on your actions, and take remedial measures.
   expected_output: >
     The number of images whose content was uploaded to Firestore.
    
