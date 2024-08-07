@@ -17,7 +17,7 @@ from crewai_tools import (
 # Initialize tools
 image_search_tool = SerperDevTool(
     search_url="https://google.serper.dev/images",
-    n_results=3,
+    n_results=10,
 )
 website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key=os.environ['FIRECRAWL_API_KEY'])
 image_downloader_tool = ImagesDownloader()

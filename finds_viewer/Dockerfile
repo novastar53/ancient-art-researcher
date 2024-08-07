@@ -15,6 +15,6 @@ COPY ./src/. .
 COPY pyproject.toml .
 COPY google-service-account.json .
 
-RUN poetry install --no-dev
+RUN poetry install --only main
 
 CMD ["python", "app.py"]

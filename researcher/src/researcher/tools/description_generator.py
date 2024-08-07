@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 
 from firecrawl import FirecrawlApp 
 
@@ -43,7 +43,7 @@ _chat_model = ChatOpenAI(model="gpt-4o")
 class DescriptionGenerator(BaseTool):
     name: str = "Image Description Generator"
     description: str = (
-        "Accepts an ImageInfo class object and length. Returns a description of the image of the desired length"
+        "Accepts an ImageInfo class object ,length and number of chunks of the source website to use as context. Returns a description of the image of the desired length"
     )
 
 
@@ -64,7 +64,7 @@ class DescriptionGenerator(BaseTool):
     _rag_prompt = ChatPromptTemplate.from_template(_rag_template)
 
 
-    def _scrape(self, url: str):
+    def _scrape(self, url: str) -> Tuple[str, dict]:
 
         try:
             options = {
@@ -74,9 +74,14 @@ class DescriptionGenerator(BaseTool):
                 },
                 "timeout": 40000,
             }
-            return _firecrawl.scrape_url(url, options)["content"]
+            results =  _firecrawl.scrape_url(url, options)
+            content = results["content"]
+            metadata = results["metadata"]
+
+            return content, metadata
+
         except:
-            return ""
+            return "", {}
 
 
     def _run(self, image_info: ImageInfo, output_num_words: int, num_chunks: int = 5) -> str:
@@ -94,7 +99,7 @@ class DescriptionGenerator(BaseTool):
         """
 
         # Scrape all the content from the image source website
-        scraped_content = self._scrape(image_info.link)        
+        scraped_content,metadata = self._scrape(image_info.link)        
 
         # Naively chunk the document into sections of similar length
         #naive_chunks = _text_splitter.split_text(scraped_content)

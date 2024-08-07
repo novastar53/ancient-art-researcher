@@ -2,5 +2,6 @@
 *.json
 *.rdb
 *.pickle
+*.whl
 __pycache__/
 dist/
