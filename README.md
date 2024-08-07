@@ -1,6 +1,6 @@
 # Ancient Art Research Assistant 
 
-Welcome to the Ancient Art Research Assistant project. This project runs an agent which automates one of my major hobbies: Researching historical art on the internet and blogging about them. This agent searches the web for new images of ancient artifacts to add to its collection. It then researches any new finds and produces reports based on the info that it has collected. It allows me to review its output periodically and then direct it to create short blog posts that references one or more of the images. 
+Welcome to the Ancient Art Research Assistant project. This project runs an agent which automates one of my major hobbies: Researching historical art on the internet and blogging about it. This agent searches the web for new images of ancient artifacts to add to its collection. It then researches any new finds and produces 100 word blurbs based on the source material. It allows me to review its output periodically and then direct it to create short blog posts that references one or more of the images. 
 
 ## Live Demo
 
