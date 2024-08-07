@@ -4,7 +4,7 @@ Welcome to the Ancient Art Research Assistant project. This project runs an agen
 
 ## Live Demo
 
-A a demo of the app can be accessed [here](https://finds-viewer-uwrcgo4b7q-ue.a.run.app/).
+A live demo of the app can be accessed [here](https://finds-viewer-uwrcgo4b7q-ue.a.run.app/).
 
 ## Installation
 
