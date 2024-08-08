@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import logging
 from datetime import datetime, timedelta, timezone
 
@@ -12,13 +13,15 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+load_dotenv()
+
 # Set up Firestore collection
-db = firestore.Client(project="history-research-assistant", database="history-research-database")
-collection = db.collection('found-image-descriptions')
+db = firestore.Client(project=os.getenv("GOOGLE_CLOUD_PROJECT"), database=os.getenv("FIRESTORE_DATABASE"))
+collection = db.collection(os.getenv("FIRESTORE_IMAGE_COLLECTION"))
 
 # Set up Google cloud storage
 client = storage.Client()
-bucket = client.bucket(os.environ["BUCKET_NAME"])
+bucket = client.bucket(os.getenv("BUCKET_NAME"))
 
 app = Flask(__name__)
 

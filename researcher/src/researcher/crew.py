@@ -1,10 +1,10 @@
 import os
+from dotenv import load_dotenv
 
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
 from researcher.tools.image_downloader import ImagesDownloader
-from researcher.tools.image_uploader import ImageUploader
 from researcher.tools.content_uploader import ContentUploader
 from researcher.tools.description_generator import DescriptionGenerator
 
@@ -13,15 +13,16 @@ from crewai_tools import (
 	FirecrawlScrapeWebsiteTool
 )
 
+load_dotenv()
+
 
 # Initialize tools
 image_search_tool = SerperDevTool(
     search_url="https://google.serper.dev/images",
     n_results=10,
 )
-website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key=os.environ['FIRECRAWL_API_KEY'])
+website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key=os.getenv('FIRECRAWL_API_KEY'))
 image_downloader_tool = ImagesDownloader()
-image_uploader_tool = ImageUploader()
 content_uploader_tool = ContentUploader()
 description_generator_tool = DescriptionGenerator()
 
@@ -36,7 +37,7 @@ class ResearcherCrew():
 	def researcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['researcher'],
-			tools=[image_search_tool, image_downloader_tool, image_uploader_tool, content_uploader_tool, description_generator_tool],
+			tools=[image_search_tool, image_downloader_tool, content_uploader_tool, description_generator_tool],
 			verbose=True
 		)
 	
@@ -45,7 +46,7 @@ class ResearcherCrew():
 		return Task(
 			config=self.tasks_config['image_research_task'],
 			agent=self.researcher(),
-			tools=[image_downloader_tool, image_search_tool, image_uploader_tool, content_uploader_tool, description_generator_tool],
+			tools=[image_downloader_tool, image_search_tool, content_uploader_tool, description_generator_tool],
 		)
 	
 	@crew

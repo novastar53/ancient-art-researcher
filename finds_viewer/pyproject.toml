@@ -1,15 +1,19 @@
 [tool.poetry]
 name = "finds-viewer"
 version = "0.1.0"
-description = "A website to view the latest ancient art research"
+description = "A website to view ancient art"
 authors = ["Vikram Pawar <pvikram035@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-Flask = "^3.0.3"
-google-cloud-storage = "^2.18.0"
+python = ">=3.10,<3.13"
+flask = "^3.0.3"
+google-auth = "^2.32.0"
+google-auth-oauthlib = "^1.2.1"
+google-auth-httplib2 = "^0.2.0"
+google-api-python-client = "^2.139.0"
 google-cloud-firestore = "^2.17.0"
+python-dotenv = "^1.0.1"
+google-cloud-storage = "^2.18.2"
 
 
 [build-system]

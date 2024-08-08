@@ -1,8 +1,12 @@
+import os
+from dotenv import load_dotenv
+
 from typing import List
 
 import requests
 import hashlib
 import mimetypes
+from google.cloud import firestore
 
 from PIL import Image
 import io
@@ -11,9 +15,12 @@ from google.cloud import storage
 
 from crewai_tools import BaseTool
 
+load_dotenv()
+
 # Connect to Google Cloud Storage
 client = storage.Client()
-bucket = client.get_bucket("latest-finds-images-happy-cat-234")
+bucket = client.get_bucket(os.getenv("GCLOUD_IMAGE_BUCKET"))
+db = firestore.Client(project=os.getenv("GOOGLE_CLOUD_PROJECT"), database=os.getenv("FIRESTORE_DATABASE"))
 
 
 class ImagesDownloader(BaseTool):

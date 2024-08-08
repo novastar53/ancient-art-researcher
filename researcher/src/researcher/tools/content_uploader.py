@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from typing import List
 
 from google.cloud import firestore
@@ -6,8 +9,12 @@ from crewai_tools import BaseTool
 
 from researcher.utils.types import Content
 
-# Initialize Firestore
-db = firestore.Client(project="history-research-assistant", database="history-research-database")
+load_dotenv()
+
+# Initialize Gcloud Firestore
+GCLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
+DATABASE = os.getenv("FIRESTORE_DATABASE")
+db = firestore.Client(project=GCLOUD_PROJECT, database=DATABASE)
 
 
 class ContentUploader(BaseTool):

@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from typing import List, Optional, Dict, Any, Tuple
 
 from firecrawl import FirecrawlApp 
@@ -22,7 +23,9 @@ from crewai_tools import BaseTool
 
 from researcher.utils.types import ImageInfo
 
-_firecrawl = FirecrawlApp(api_key=os.environ.get("FIRECRAWL_API_KEY"))
+load_dotenv()
+
+_firecrawl = FirecrawlApp(api_key=os.getenv("FIRECRAWL_API_KEY"))
 
 _text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
