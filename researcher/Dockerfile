@@ -18,13 +18,14 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 WORKDIR /app
 
-COPY ./src/. . 
-COPY ".env" .
-COPY history-research-assistant-cc5c45e3ff39.json .
+# Install Python dependencies
 COPY pyproject.toml .
-
+COPY ./src/. . 
 RUN poetry install --only main
 
-#RUN python researcher/manage_redis.py
+COPY ".env" .
+COPY history-research-assistant-cc5c45e3ff39.json .
+COPY topics.txt .
+COPY run.sh .
 
-CMD ["poetry", "run", "researcher"]
+CMD ["./run.sh", "topics.txt"]
