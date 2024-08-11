@@ -1,0 +1,1 @@
+docker run gcr.io/$GOOGLE_CLOUD_PROJECT/researcher:latest

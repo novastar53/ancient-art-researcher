@@ -1,10 +1,10 @@
 image_research_task:
   description: >
     Instructions:
-    1. Search for images related to {topic} on the internet. For each image, retrieve the 'source', 'link', 'title', 'imageUrl' fields from the search results. 
-    2. Generate file names for all the images using the 'title' field. Make sure to include the file extension based on the filename of the searched image. 
+    1. Search for images related to {topic} on the internet. Retrieve the 'source', 'link', 'title', 'imageUrl' fields from the search results. 
+    2. Generate file names for all the images using the 'title' field. Include the file extension based on the filename of the searched image. 
     4. Download the images into Google Cloud Storage. 
-    5. For all the images that were downloaded successfully, use the DescriptionGenerator to generate a short description (100 words). Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
+    5. For all the images that didn't exist in the Google Cloud Storage Bucket, use the DescriptionGenerator to generate a short description (100 words). Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
     6. Upload the generated content for each uploaded image to Firestore. Ensure that you populate the Action Input with all the fields of the Content class correctly:
         file_name: the generated file name   
         generated_description: the generated paragraph describing the image
@@ -13,8 +13,8 @@ image_research_task:
         sha256_hash: obtained from the image downloader output
         source: the source field from the search results
         title: the title field from the search results
-    If you encounter any errors or exceptions in the process, analyze them, reflect on your actions, and take remedial actions.
-    If you don't have any new images, do not generate descriptions
+      If you encounter any errors or exceptions in the process, analyze them, reflect on your actions, and take remedial actions.
+      If you don't have any new images, do not generate descriptions
   expected_output: >
     The number of images whose content was uploaded to Firestore.
    

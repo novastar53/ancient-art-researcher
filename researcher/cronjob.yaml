@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: researcher-job
+spec:
+  schedule: "0 0 */1 * *"  # Schedule for every 1 hour
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+          - name: researcher
+            image: gcr.io/history-research-assistant/researcher:latest
+            imagePullPolicy: Always
+          restartPolicy: Never

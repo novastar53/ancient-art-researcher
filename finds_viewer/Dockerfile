@@ -11,7 +11,7 @@ WORKDIR /app
 
 COPY ./src/finds_viewer/. . 
 COPY ".env" .
-COPY pyproject.toml .
+COPY pyproject.toml poetry.lock ./
 COPY google-service-account.json .
 
 RUN poetry install --only main
