@@ -4,7 +4,7 @@ Welcome to the Ancient Art Research Assistant project. This project runs an agen
 
 ## Live Demo
 
-A live demo of the app can be accessed [here](indian-art.info).
+A live demo of the app can be accessed [here](https://indian-art.info).
 
 ## Installation
 
