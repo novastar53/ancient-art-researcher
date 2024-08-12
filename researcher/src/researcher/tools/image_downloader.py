@@ -54,7 +54,7 @@ class ImagesDownloader(BaseTool):
 
                     # Skip if the image hash exists
                     if image_hash in existing_hashes:
-                        results.append({"file_name": file_name, "sha256_hash":image_hash, "success": False, "error_message": "File exists in bucket"})
+                        results.append({"file_name": file_name, "sha256_hash":image_hash, "success": False, "error_message": "Image already exists"})
                         continue
 
                     # Create a blob and upload it

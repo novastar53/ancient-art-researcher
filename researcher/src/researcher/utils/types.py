@@ -18,3 +18,11 @@ class ImageInfo(BaseModel):
     title: str # The title of the image
     source: str # The url from where the image was downloaded
     link: str # The url for the image source
+    sha256_hash: str # the sha256 hash of the image
+
+class ImageDescription(BaseModel):
+    """Description of an image"""
+    sha256_hash: str # the sha256 hash of the image
+    description: str # description of the image
+
+
