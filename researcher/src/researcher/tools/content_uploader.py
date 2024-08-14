@@ -21,14 +21,17 @@ db = firestore.Client(project=GCLOUD_PROJECT, database=DATABASE)
 class ContentUploader(BaseTool):
     name: str = "Content Uploader"
     description: str = (
-        "Accepts a List of Content class objects and uploads them to a Firestore database"
+        "Accepts a List of Content class objects and uploads them to a Firestore database."
     )
 
     def upload_content(self, content: List[Content]) -> str:
 
-        for item in content:
-            doc_ref = db.collection(COLLECTION).document(item.sha256_hash)
-            doc_ref.set(item.dict())
+        try:
+            for item in content:
+                doc_ref = db.collection(COLLECTION).document(item.sha256_hash)
+                doc_ref.set(item.dict())
+        except Exception as e:
+            return f"Some uploads failed with exception {e}"
 
         return "Uploads succeeded."
 

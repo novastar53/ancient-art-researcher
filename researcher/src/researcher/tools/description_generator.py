@@ -21,7 +21,7 @@ from langchain_openai import ChatOpenAI
 
 from crewai_tools import BaseTool
 
-from researcher.utils.types import ImageInfo, ImageDescription
+from researcher.utils.types import ImageInfo 
 
 load_dotenv()
 
@@ -46,7 +46,8 @@ _chat_model = ChatOpenAI(model="gpt-4o")
 class DescriptionGenerator(BaseTool):
     name: str = "Image Description Generator"
     description: str = (
-        "Accepts an ImageInfo class object ,length and number of chunks of the source website to use as context. Returns a description of the image of the desired length"
+        "Accepts an ImageInfo class object ,length and number of chunks of the source website to use as context.  \
+        Returns the generated description"
     )
 
 
@@ -87,7 +88,7 @@ class DescriptionGenerator(BaseTool):
             return "", {}
 
 
-    def _run(self, image_info: ImageInfo, output_num_words: int, num_chunks: int=5) -> ImageDescription:
+    def _run(self, *, image_info: ImageInfo, output_num_words: int, num_chunks: int=5) -> str:
         """
         Generates descriptions from metadata and source website content.
 
@@ -97,7 +98,7 @@ class DescriptionGenerator(BaseTool):
         num_chunks: The number of relevant chunks to use as context. Try reducing it to create a shorter context window if the LLM requests fewer tokens.
 
         Returns:
-        ImageDescription: The generated output
+        str: The generated output
 
         """
 
@@ -148,6 +149,5 @@ class DescriptionGenerator(BaseTool):
         )
 
         # Retrieve the model output and return it
-        generated_text =  rag_chain.invoke(_get_prompt())
-        return ImageInfo({"sha256_hash":image_info.sha256_hash, "description":generated_text})
+        return rag_chain.invoke(_get_prompt())
         

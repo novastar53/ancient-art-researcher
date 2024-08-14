@@ -8,16 +8,22 @@ from researcher.crew import ResearcherCrew
 
 load_dotenv()
 
-def run():
+def run(topic: str | None = None):
     """
     Run the researcher crew.
     """
 
-    # Parse topic 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("topic", type=str, help="Research Topic")
-    args = parser.parse_args()
-    inputs = {'topic': args.topic}
+    if not topic:
+        # Parse topic from command line args
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--topic", type=str, help="Research Topic")
+        args = parser.parse_args()
+        topic = args.topic
+
+    inputs = {'topic': topic}
 
     ResearcherCrew().crew().kickoff(inputs=inputs)
 
+
+if __name__=="__main__":
+    run()

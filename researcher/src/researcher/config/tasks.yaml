@@ -13,11 +13,13 @@ download_and_generate_descriptions:
     Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
   expected_output: >
     Generated descriptions for the images that were successfully downloaded.
+    sha256_hash for each image.
 
 
 upload_content:
   description: >
-    Upload the generated content to Firestore.
+    Upload the generated content to Firestore. 
+    Use the sha256_hash returned 
     If no images were uploaded successfully, stop.
   expected_output: >
     The number of images for which content was successfully generated and uploaded.
