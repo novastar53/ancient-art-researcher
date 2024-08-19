@@ -7,19 +7,20 @@ search_for_images:
 
 download_and_generate_descriptions:
   description: >
-    Generate file names for all the images using the 'title' field. Include the file extension based on the filename of the searched image. 
-    Try to download the images into Google Cloud Storage. 
-    If some images don't exist in Google Cloud Storage, use the DescriptionGenerator tool to generate a short description (100 words). 
-    Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
+    1. Generate file names for all the images using the 'title' field. Include the file extension based on the filename of the searched image. 
+    2. Try to download the images into Google Cloud Storage. 
+    3. For the images that were successfully downloaded without errors, use the DescriptionGenerator tool to generate a short description (100 words). 
+    4. Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
+    5. If no images were successfully downloaded, try searching for images again by changing the search term slightly or increasing the number of results
   expected_output: >
-    Generated descriptions for the images that were successfully downloaded.
-    sha256_hash for each image.
+    1. Generated descriptions for the images that were successfully downloaded.
+    2. sha256_hash for each image.
 
 
 upload_content:
   description: >
+    Use the output of 'download_and_generate_descriptions' task.
     Upload the generated content to Firestore. 
-    Use the sha256_hash returned 
     If no images were uploaded successfully, stop.
   expected_output: >
     The number of images for which content was successfully generated and uploaded.

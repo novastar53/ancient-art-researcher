@@ -26,12 +26,14 @@ class ContentUploader(BaseTool):
 
     def upload_content(self, content: List[Content]) -> str:
 
-        try:
-            for item in content:
+        for item in content:
+            try:
                 doc_ref = db.collection(COLLECTION).document(item.sha256_hash)
-                doc_ref.set(item.dict())
-        except Exception as e:
-            return f"Some uploads failed with exception {e}"
+                doc = doc_ref.get()
+                if not doc.exists:
+                    doc_ref.set(item.dict())
+            except Exception as e:
+                return f"Upload {item} failed with exception {e}"
 
         return "Uploads succeeded."
 

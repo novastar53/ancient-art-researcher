@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 
+from langchain_openai import ChatOpenAI
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
@@ -49,6 +51,7 @@ class ResearcherCrew():
 	def search_for_images(self) -> Task:
 		return Task(
 			config=self.tasks_config['search_for_images'],
+			tools=tools,
 			agent=self.researcher(),
 		)
 	
@@ -57,6 +60,7 @@ class ResearcherCrew():
 	def download_images(self) -> Task:
 		return Task(
 			config=self.tasks_config['download_and_generate_descriptions'],
+			tools=tools,
 			agent=self.researcher()
 
 		)	
@@ -65,6 +69,7 @@ class ResearcherCrew():
 	def upload_content(self) -> Task:
 		return Task(
 			config=self.tasks_config['upload_content'],
+			tools=tools,
 			agent=self.researcher()
 		)
 
@@ -72,10 +77,11 @@ class ResearcherCrew():
 	def crew(self) -> Crew:
 		"""Creates the Ancient Art Research crew"""
 		return Crew(
+			manager_llm=ChatOpenAI(model_name="gpt-4o", temperature=0),
 			agents=self.agents, # Automatically created by the @agent decorator
 			tasks=self.tasks, # Automatically created by the @task decorator
 			process=Process.sequential,
-			#planning=True,
+			planning=True,
 			memory=True,
 			verbose=2,
 
