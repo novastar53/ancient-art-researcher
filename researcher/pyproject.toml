@@ -20,7 +20,6 @@ fastembed = "^0.3.4"
 python-dotenv = "^1.0.1"
 
 [tool.poetry.scripts]
-redis = "researcher.manage_redis:start_redis_server"
 researcher = "researcher.main:run"
 
 [build-system]

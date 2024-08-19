@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 
+from langchain_openai import ChatOpenAI
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
@@ -19,12 +21,16 @@ load_dotenv()
 # Initialize tools
 image_search_tool = SerperDevTool(
     search_url="https://google.serper.dev/images",
-    n_results=10,
 )
-website_scrape_tool = FirecrawlScrapeWebsiteTool(api_key=os.getenv('FIRECRAWL_API_KEY'))
 image_downloader_tool = ImagesDownloader()
 content_uploader_tool = ContentUploader()
 description_generator_tool = DescriptionGenerator()
+
+
+tools = [image_search_tool, 
+		 image_downloader_tool, 
+		 content_uploader_tool, 
+		 description_generator_tool]
 
 @CrewBase
 class ResearcherCrew():
@@ -37,25 +43,47 @@ class ResearcherCrew():
 	def researcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['researcher'],
-			tools=[image_search_tool, image_downloader_tool, content_uploader_tool, description_generator_tool],
+			tools=tools,
 			verbose=True
 		)
 	
 	@task
-	def image_research_task(self) -> Task:
+	def search_for_images(self) -> Task:
 		return Task(
-			config=self.tasks_config['image_research_task'],
+			config=self.tasks_config['search_for_images'],
+			tools=tools,
 			agent=self.researcher(),
-			tools=[image_downloader_tool, image_search_tool, content_uploader_tool, description_generator_tool],
 		)
 	
+
+	@task
+	def download_images(self) -> Task:
+		return Task(
+			config=self.tasks_config['download_and_generate_descriptions'],
+			tools=tools,
+			agent=self.researcher()
+
+		)	
+
+	@task
+	def upload_content(self) -> Task:
+		return Task(
+			config=self.tasks_config['upload_content'],
+			tools=tools,
+			agent=self.researcher()
+		)
+
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the Ancient Art Research crew"""
 		return Crew(
+			manager_llm=ChatOpenAI(model_name="gpt-4o", temperature=0),
 			agents=self.agents, # Automatically created by the @agent decorator
 			tasks=self.tasks, # Automatically created by the @task decorator
 			process=Process.sequential,
+			planning=True,
+			memory=True,
 			verbose=2,
+
 			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
 		)

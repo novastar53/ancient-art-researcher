@@ -1,7 +1,4 @@
 FROM --platform=linux/amd64 python:3.12-slim AS build
-#FROM python:3.12-slim 
-
-ARG GOOGLE_APPLICATION_CREDENTIALS
 
 # Set environment variables
 ENV POETRY_VERSION=1.8.3
@@ -28,6 +25,7 @@ COPY ./src/. .
 RUN poetry install --only main 
 
 COPY ".env" .
+ARG GOOGLE_APPLICATION_CREDENTIALS
 COPY ${GOOGLE_APPLICATION_CREDENTIALS} .
 COPY topics.txt .
 COPY run.sh .

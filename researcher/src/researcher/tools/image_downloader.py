@@ -9,7 +9,8 @@ import mimetypes
 from google.cloud import firestore
 
 from PIL import Image
-import io
+from io import BytesIO
+
 
 from google.cloud import storage
 
@@ -50,11 +51,13 @@ class ImagesDownloader(BaseTool):
 
                     # Retrieve the image contents 
                     image_data = response.content
+                    image = Image.open(BytesIO(image_data))
+                    image.verify()
                     image_hash = hashlib.sha256(image_data).hexdigest()
 
                     # Skip if the image hash exists
                     if image_hash in existing_hashes:
-                        results.append({"file_name": file_name, "sha256_hash":image_hash, "success": False, "error_message": "File exists in bucket"})
+                        results.append({"file_name": file_name, "sha256_hash":image_hash, "success": False, "error_message": "Image already exists"})
                         continue
 
                     # Create a blob and upload it
@@ -70,7 +73,7 @@ class ImagesDownloader(BaseTool):
 
                     results.append({"file_name": file_name, "sha256_hash":image_hash, "success": True, "error_message": None})
             except Exception as e:
-                results.append({"file_name": file_name, "sha256_hash":None, "success": False, "error_message": e.__str__})
+                results.append({"file_name": file_name, "sha256_hash":None, "success": False, "error_message": e})
 
                             
         return results
