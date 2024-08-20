@@ -23,3 +23,4 @@ upload_content:
     Upload the generated content to Firestore. 
   expected_output: >
     The number of images which were downloaded and for which content was successfully generated and uploaded.
+

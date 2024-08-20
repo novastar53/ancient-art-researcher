@@ -66,7 +66,6 @@ class ResearcherCrew():
 			agent=self.researcher()
 
 		)	
-	
 
 	@task
 	def upload_content(self) -> Task:

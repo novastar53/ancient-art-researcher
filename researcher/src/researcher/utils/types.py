@@ -18,3 +18,4 @@ class ImageInfo(BaseModel):
     title: str # The title of the image
     source: str # The url from where the image was downloaded
     link: str # The url for the image source
+
