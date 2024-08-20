@@ -1,10 +1,7 @@
-S. Dhanapal paintings
-A. Ramachandran paintings
-K.C.S. Paniker paintings
+Y.G. Srimati paintings
 C. Kondaiah Raju paintings
 S.L. Haldankar paintings
 M.A.R. Chughtai paintings
-Y.G. Srimati paintings
 K. Venkatappa paintings
 Vaddadi Papaiah art
 Sarada Charan Ukil paintings
@@ -24,3 +21,7 @@ Vakataka bronze
 Vakataka sculpture
 Pala empire art 
 Pala empire statue
+S. Dhanapal paintings
+A. Ramachandran paintings
+K.C.S. Paniker paintings
+

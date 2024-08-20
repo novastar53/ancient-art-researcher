@@ -14,7 +14,7 @@ class Content(BaseModel):
 
 
 class ImageInfo(BaseModel):
-    """Information for an image downloaded from the internet"""
+    """Information for an image found on the internet"""
     title: str # The title of the image
     source: str # The url from where the image was downloaded
     link: str # The url for the image source
