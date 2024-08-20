@@ -9,10 +9,10 @@ from crewai.project import CrewBase, agent, crew, task
 from researcher.tools.image_downloader import ImagesDownloader
 from researcher.tools.content_uploader import ContentUploader
 from researcher.tools.description_generator import DescriptionGenerator
+from researcher.tools.content_checker import ContentUploadChecker
 
 from crewai_tools import (
     SerperDevTool,
-	FirecrawlScrapeWebsiteTool
 )
 
 load_dotenv()
@@ -24,12 +24,14 @@ image_search_tool = SerperDevTool(
 )
 image_downloader_tool = ImagesDownloader()
 content_uploader_tool = ContentUploader()
+content_checker_tool = ContentUploadChecker()
 description_generator_tool = DescriptionGenerator()
 
 
 tools = [image_search_tool, 
 		 image_downloader_tool, 
 		 content_uploader_tool, 
+		 content_checker_tool,
 		 description_generator_tool]
 
 @CrewBase
@@ -64,6 +66,7 @@ class ResearcherCrew():
 			agent=self.researcher()
 
 		)	
+	
 
 	@task
 	def upload_content(self) -> Task:
