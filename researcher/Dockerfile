@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.12-slim AS build
+FROM python:3.12-slim 
 
 # Set environment variables
 ENV POETRY_VERSION=1.8.3

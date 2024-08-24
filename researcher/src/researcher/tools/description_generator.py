@@ -23,6 +23,11 @@ from crewai_tools import BaseTool
 
 from researcher.utils.types import ImageInfo 
 
+#import weave
+import random
+
+#weave.init('ancient-art-researcher')
+
 load_dotenv()
 
 _firecrawl = FirecrawlApp(api_key=os.getenv("FIRECRAWL_API_KEY"))
@@ -87,7 +92,7 @@ class DescriptionGenerator(BaseTool):
         except:
             return "", {}
 
-
+    #@weave.op()
     def _run(self, *, image_info: ImageInfo, output_num_words: int, num_chunks: int=5) -> str:
         """
         Generates descriptions from metadata and source website content.
@@ -103,7 +108,7 @@ class DescriptionGenerator(BaseTool):
         """
 
         # Scrape all the content from the image source website
-        scraped_content,metadata = self._scrape(image_info.link)        
+        scraped_content, metadata = self._scrape(image_info.link)        
 
         # Naively chunk the document into sections of similar length
         #naive_chunks = _text_splitter.split_text(scraped_content)
@@ -116,7 +121,7 @@ class DescriptionGenerator(BaseTool):
         #naive_chunk_vectorstore = Chroma.from_texts(naive_chunks, embedding=_embed_model)
         #naive_chunk_retriever = naive_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5},)
 
-        # Embed the semantic chunks using an embedding mdoel
+        # Embed the semantic chunks using an embedding model
         semantic_chunk_vectorstore = Chroma.from_documents(semantic_chunks, embedding=_embed_model)
         semantic_chunk_retriever = semantic_chunk_vectorstore.as_retriever(search_kwargs={"k" : num_chunks})
 

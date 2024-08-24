@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: researcher-job
 spec:
-  schedule: "0 0 */1 * *"  # Schedule for every 1 hour
+  schedule: "0 0 */1 * *"  # Schedule for once a day
   jobTemplate:
     spec:
       backoffLimit: 0

@@ -9,9 +9,5 @@ fi
 
 TOPICS=$1
 
-while IFS= read -r line
-do
-    echo $line
-    poetry run researcher --topic "$line"
-    sleep 10
-done < $TOPICS
+poetry run researcher --topics-filepath $TOPICS
+echo "Finished."
