@@ -18,6 +18,8 @@ firecrawl-py = "^0.0.20"
 langchain-groq = "^0.1.9"
 fastembed = "^0.3.4"
 python-dotenv = "^1.0.1"
+wandb = "^0.17.7"
+weave = "^0.50.14"
 
 [tool.poetry.scripts]
 researcher = "researcher.main:run"
