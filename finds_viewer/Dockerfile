@@ -9,11 +9,13 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 WORKDIR /app
 
+COPY pyproject.toml poetry.lock ./
+RUN poetry install --only main
+
 COPY ./src/finds_viewer/. . 
 COPY ".env" .
-COPY pyproject.toml poetry.lock ./
-COPY google-service-account.json .
-
 RUN poetry install --only main
+
+COPY google-service-account.json .
 
 CMD ["python", "app.py"]

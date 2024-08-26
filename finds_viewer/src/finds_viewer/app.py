@@ -1,4 +1,5 @@
 import os
+import random
 from dotenv import load_dotenv
 import logging
 from datetime import datetime, timedelta, timezone
@@ -25,7 +26,31 @@ bucket = client.bucket(os.getenv("BUCKET_NAME"))
 
 app = Flask(__name__)
 
-def list_images():
+def get_random_finds(n=8):
+
+    # Get the images and sort them by most recent.
+    blobs = bucket.list_blobs()
+
+    blobs = [ b for b in blobs if b.content_type.startswith("image/") ]
+
+    # pick n random images
+    blobs = random.sample(blobs, n)
+
+    # Get the content from Firestore
+    hashes = [ b.metadata.get("sha256hash") for b in blobs ]
+    content = [ collection.document(h).get().to_dict() for h in hashes ]
+    
+    # Generate input data for the template engine
+    images = [{"url": b.public_url, 
+               "source_url": d.get("source_url") if d else "",
+               "title": d.get("title") if d else "", 
+               "description": d.get("generated_description") if d else ""} for b,d in zip(blobs,content) ]
+
+    return images
+
+
+
+def get_recent_finds():
 
     # Get the images and sort them by most recent.
     blobs = bucket.list_blobs()
@@ -52,11 +77,23 @@ def list_images():
 def home():
 
     # Generate content
-    images = list_images()
+    images = get_recent_finds()
+    current_date = datetime.now().strftime("%B %d, %Y")
+    title = f"Latest Finds on {current_date}"
+
+    # Render the page
+    return render_template('index.html', images=images, title=title)
+
+@app.route('/random')
+def randomize():
+
+    # Generate content
+    images = get_random_finds(8)
     current_date = datetime.now().strftime("%B %d, %Y")
 
     # Render the page
-    return render_template('index.html', images=images, current_date=current_date)
+    return render_template('index.html', images=images, title="Some Random Finds")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

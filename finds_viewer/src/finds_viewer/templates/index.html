@@ -28,12 +28,42 @@
         .grey-link:hover {
             color: grey;
         }
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover;
+        }
+        .navbar-brand-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
     </style>
-    <title>Latest Finds on {{ current_date }}</title>
+    <title>{{ title }}</title>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="https://storage.googleapis.com/ancient-artefact-viewer-asssets/1682608157509.jpeg" alt="Vikram Pawar">
+            <span class="navbar-brand-title">Indian Art Finder</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="https://indian-art.info/random">Randomize</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container mt-5">
-        <h1 class="text-left">Latest Finds on {{ current_date }}</h1>
+        <h1 class="text-left">{{ title }}</h1>
         <div class="row">
             {% for image in images %}
             <div class="col-md-3">
@@ -54,5 +84,10 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
