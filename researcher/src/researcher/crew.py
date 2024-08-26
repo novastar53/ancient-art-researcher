@@ -52,7 +52,7 @@ class ResearcherCrew():
 	@task
 	def search_for_images(self) -> Task:
 		return Task(
-			config=self.tasks_config['search_for_images'],
+			config=self.tasks_config['search_for_images_and_download'],
 			tools=tools,
 			agent=self.researcher(),
 		)
@@ -61,7 +61,7 @@ class ResearcherCrew():
 	@task
 	def download_images(self) -> Task:
 		return Task(
-			config=self.tasks_config['download_and_generate_descriptions'],
+			config=self.tasks_config['generate_image_descriptions'],
 			tools=tools,
 			agent=self.researcher()
 

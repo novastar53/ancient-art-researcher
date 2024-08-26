@@ -1,17 +1,18 @@
-search_for_images:
+search_for_images_and_download:
   description: >
-    Search for images related to {topic} on the internet. 
+    1. Search for images related to {topic} on the internet. 
+    2. Generate file names for all the images using the 'title' field. Include the file extension based on the filename of the searched image. 
+    3. Download the images into Google Cloud Storage. If no images were downloaded successfully, try searching for images again by modifying the search term slightly or increasing the number of results (set 'n_results' to > 10. 20 maybe) 
   expected_output: >
-    The 'source', 'link', 'title', 'imageUrl' fields from the search results. 
+    The 'source', 'link', 'title', 'imageUrl' fields from the search results
+    The sha256_hash for each image downloaded.
+
    
 
-download_and_generate_descriptions:
+generate_image_descriptions:
   description: >
-    1. Generate file names for all the images using the 'title' field. Include the file extension based on the filename of the searched image. 
-    2. Download the images into Google Cloud Storage. 
-    3. Check if any content related to them was uploaded to Firestore previously. If no content was previously uploaded, use the DescriptionGenerator tool to generate a short description (100 words). 
+    1. Check if any content related to them was uploaded to Firestore previously. If no content was previously uploaded, use the DescriptionGenerator tool to generate a short description (100 words). 
        Wait 30 seconds between requests to the DescriptionGenerator as it is slow and rate-limited.
-    4. If no images were successfully downloaded, try searching for images again by changing the search term slightly or increasing the number of results
   expected_output: >
     1. Generated descriptions for the images that had no previously generated content.
     2. sha256_hash for each image.
