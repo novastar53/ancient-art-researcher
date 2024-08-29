@@ -1,0 +1,77 @@
+/*Navbar*/
+.navbar-brand img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover;
+}
+.navbar-brand-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 10px;
+    display: block;
+    margin-bottom: -10px;
+}
+.author-text {
+    font-size: 0.8rem;
+    color: gray;
+    margin-left: 10px;
+    font-style: italic;
+}
+
+
+/* Responsive Grid layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: 5px;
+    padding: 16px;
+    justify-items: center;
+}
+
+.grid-item {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;  /* Maintain a square aspect ratio */
+    background-color: #ccc;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Hover effect */
+.grid-item:hover {
+    background-color: #ffcc00;
+}
+
+/* Modal for zoomed image */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    display: block;
+    margin: auto;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}

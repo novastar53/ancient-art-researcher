@@ -75,24 +75,26 @@ def get_recent_finds():
 
 @app.route('/')
 def home():
+    # Generate content
+    images = get_random_finds(8)
+    current_date = datetime.now().strftime("%B %d, %Y")
 
+    # Render the page
+    return render_template('index.html', images=images, title="")
+
+@app.route('/latest')
+def randomize():
     # Generate content
     images = get_recent_finds()
     current_date = datetime.now().strftime("%B %d, %Y")
     title = f"Latest Finds on {current_date}"
 
     # Render the page
-    return render_template('index.html', images=images, title=title)
+    return render_template('latest.html', images=images, title=title)
 
-@app.route('/random')
-def randomize():
-
-    # Generate content
-    images = get_random_finds(8)
-    current_date = datetime.now().strftime("%B %d, %Y")
-
-    # Render the page
-    return render_template('index.html', images=images, title="Some Random Finds")
+@app.route('/gridview')
+def grid():
+    return render_template('gridview.html')
 
 
 if __name__ == '__main__':

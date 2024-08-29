@@ -1,0 +1,67 @@
+.small-text {
+    font-size: 0.8rem;
+}
+.img-square-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+.img-square-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.grey-link {
+    color: grey;
+}
+.grey-link:hover {
+    color: grey;
+}
+.navbar-brand img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover;
+}
+.navbar-brand-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 10px;
+    display: block;
+    margin-bottom: -10px;
+}
+.author-text {
+    font-size: 0.8rem;
+    color: gray;
+    margin-left: 10px;
+    font-style: italic;
+}
+.refresh-btn {
+    width: 60px;
+    height: 60px;
+    border-width: 0;
+    border-radius: 50%;
+    background-color: white;
+    color: rgb(42, 42, 42);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.0rem;
+    position: relative;
+    margin: 20px auto;
+    cursor: pointer;
+}
+.refresh-btn:focus, .refresh-btn:active {
+    outline: none;
+    box-shadow: none;
+}
+/* Hide the refresh button on mobile devices (screens smaller than 768px) */
+@media (max-width: 768px) {
+    .refresh-btn {
+        display: none;
+    }
+}
