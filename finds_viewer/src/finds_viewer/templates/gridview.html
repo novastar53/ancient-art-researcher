@@ -34,10 +34,23 @@
     </div>
 
     <!-- Modal for displaying zoomed image -->
-    <div id="imageModal" class="modal">
+    <div id="imageModal" class="modal card mb-4">
         <span class="close">&times;</span>
-        <img class="modal-content" id="zoomedImage">
+        <img class="image-squre-wrapper img" id="zoomedImage">
+        <div class="card-title">
+            <h5>
+                <a href="#" id="imageTitleLink">Image Title</a>
+            </h5>
+        </div>
+        <!-- Small paragraph for the description -->
+        <div class="card-body">
+            <p id="imageDescription">This is the description of the image.</p>
+        </div>
     </div>
+
+    <script>
+        var imageArray = {{ images|tojson }};
+    </script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

@@ -83,7 +83,7 @@ def home():
     return render_template('index.html', images=images, title="")
 
 @app.route('/latest')
-def randomize():
+def latest():
     # Generate content
     images = get_recent_finds()
     current_date = datetime.now().strftime("%B %d, %Y")
@@ -94,7 +94,10 @@ def randomize():
 
 @app.route('/gridview')
 def grid():
-    return render_template('gridview.html')
+    # Generate content
+    images = get_random_finds(8)
+    current_date = datetime.now().strftime("%B %d, %Y")
+    return render_template('gridview.html', images=images, title="")
 
 
 if __name__ == '__main__':
