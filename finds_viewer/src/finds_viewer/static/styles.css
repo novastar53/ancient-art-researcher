@@ -70,7 +70,7 @@
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
-    gap: 20px; /* Consistent spacing between cards */
+    gap: 0px; /* Consistent spacing between cards */
     justify-content: center;
 }
 

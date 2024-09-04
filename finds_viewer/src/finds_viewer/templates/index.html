@@ -82,10 +82,15 @@
                 }
             } else {
                 // Reset height for collapsed state
-                card.style.height = '200px';
+                card.style.height = '300px';
             }
         });
     });
+
+    document.getElementById('refreshButton').addEventListener('click', function() {
+        location.reload();
+    });
     </script>
+
 </body>
 </html>
