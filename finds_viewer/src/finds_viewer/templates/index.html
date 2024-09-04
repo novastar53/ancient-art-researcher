@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <!-- Meta and Stylesheets as per original code -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -36,23 +37,21 @@
                 <i class="fas fa-sync-alt"></i>
         </button>
     </div>
-
+    
     <!-- Main Content -->
     <div class="container mt-5">
         <h1 class="text-left">{{ title }}</h1>
-        <div class="row">
+        <div class="row card-container">
             {% for image in images %}
             <div class="col-md-3">
-                <div class="card mb-4">
+                <div class="card expandable-card collapsed mb-4">
                     <div class="card-body">
                         <h5 class="card-title">
                             <a href="{{ image.source_url }}" target="_blank" class="grey-link">{{ image.title }}</a>
                         </h5>
                     </div>
-                    <a href="{{ image.url }}" target="_blank" class="img-square-wrapper">
-                        <img src="{{ image.url }}" class="card-img-top" alt="{{ image.title }}">
-                    </a>
-                    <div class="card-body">
+                    <img src="{{ image.url }}" class="card-img-top" alt="{{ image.title }}">
+                    <div class="card-body card-details">
                         <p class="card-text small-text">{{ image.description }}</p>
                     </div>
                 </div>
@@ -66,11 +65,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript for Refresh Button -->
+    <!-- JavaScript for Refresh Button and Card Expand/Collapse -->
     <script>
-        document.getElementById('refreshButton').addEventListener('click', function() {
-            location.reload();
+    document.querySelectorAll('.expandable-card').forEach(card => {
+        card.addEventListener('click', function() {
+            // Toggle the 'collapsed' state on click
+            card.classList.toggle('collapsed');
+            
+            // Dynamically adjust the card's position and size if needed
+            if (!card.classList.contains('collapsed')) {
+                // Ensure the card fits within the viewport height
+                const viewportHeight = window.innerHeight;
+                const cardHeight = card.getBoundingClientRect().height;
+                if (cardHeight > viewportHeight) {
+                    card.style.height = `${viewportHeight - 40}px`; // Adjust height if needed
+                }
+            } else {
+                // Reset height for collapsed state
+                card.style.height = '200px';
+            }
         });
+    });
     </script>
 </body>
 </html>

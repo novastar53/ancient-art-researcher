@@ -76,7 +76,7 @@ def get_recent_finds():
 @app.route('/')
 def home():
     # Generate content
-    images = get_random_finds(8)
+    images = get_random_finds(16)
     current_date = datetime.now().strftime("%B %d, %Y")
 
     # Render the page
