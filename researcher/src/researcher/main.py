@@ -24,16 +24,24 @@ def run(topics: List[str] | None = None):
         # Parse topic from command line args
         parser = argparse.ArgumentParser()
         parser.add_argument("--topics-filepath", type=str, help="A file path to a plaintext file with the research topics.")
+        parser.add_argument("--topic", type=str, help="The research topic.")
         args = parser.parse_args()
 
         # Randomly pick a topic from the list
-        topics = open(args.topics_filepath, "r").readlines()
-        idx = random.randint(0, len(topics))
-        topic = topics[idx]
+        if args.topic:
+            inputs = {'topic': args.topic}
+        elif args.topics_filepath:
+            topics = open(args.topics_filepath, "r").readlines()
+            idx = random.randint(0, len(topics))
+            topic = topics[idx]
 
-        logger.info(f"Researching {topic}...")
+            logger.info(f"Researching {topic}...")
 
-        inputs = {'topic': topic}
+            inputs = {'topic': topic}
+        else:
+            parser.print_help()
+            return
+            
 
         ResearcherCrew().crew().kickoff(inputs=inputs)
 
