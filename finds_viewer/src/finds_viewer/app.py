@@ -2,7 +2,10 @@ import os
 import random
 from dotenv import load_dotenv
 import logging
+from time import time
 from datetime import datetime, timedelta, timezone
+
+import asyncio as aio
 
 from flask import Flask, render_template
 
@@ -52,6 +55,7 @@ def get_random_finds(n=8):
 
 def get_recent_finds():
 
+    start_time = time()
     # Get the images and sort them by most recent.
     blobs = bucket.list_blobs()
 
@@ -64,19 +68,21 @@ def get_recent_finds():
     # Get the content from Firestore
     hashes = [ b.metadata.get("sha256hash") for b in blobs ]
     content = [ collection.document(h).get().to_dict() for h in hashes ]
-    
+
     # Generate input data for the template engine
     images = [{"url": b.public_url, 
                "source_url": d.get("source_url") if d else "",
                "title": d.get("title") if d else "", 
                "description": d.get("generated_description") if d else ""} for b,d in zip(blobs,content) ]
 
+    logger.info(f"Got {len(images)} images in {time()-start_time:0.4f}s")
+
     return images
 
 @app.route('/')
 def home():
     # Generate content
-    images = get_random_finds(16)
+    images = get_random_finds(n=45)
     current_date = datetime.now().strftime("%B %d, %Y")
 
     # Render the page
@@ -91,13 +97,6 @@ def latest():
 
     # Render the page
     return render_template('latest.html', images=images, title=title)
-
-@app.route('/gridview')
-def grid():
-    # Generate content
-    images = get_random_finds(8)
-    current_date = datetime.now().strftime("%B %d, %Y")
-    return render_template('gridview.html', images=images, title="")
 
 
 if __name__ == '__main__':
