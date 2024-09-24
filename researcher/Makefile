@@ -1,19 +1,31 @@
 
-all: build
+all: venv init build
 
+venv: 
+	python -m venv .venv 
+	. .venv/bin/activate 
+
+init: 
+	. .venv/bin/activate && poetry lock
+
+install: 
+	. .venv/bin/activate && poetry install 
 
 build: 
-	./build.sh
+	. .venv/bin/activate && ./build.sh
 
 
 deploy: build
-	./deploy.sh
+	. .venv/bin/activate && ./deploy.sh
 
 run: 
-	./run.sh topics.txt
+	. .venv/bin/activate && ./run.sh topics.txt
 
 run_docker: build
-	./run_docker.sh
+	. .venv/bin/activate && ./run_docker.sh
 
+clean: 
+	rm -rf venv
+	rm -rf dist
 
 .PHONY: all build deploy run run_docker
