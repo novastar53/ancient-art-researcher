@@ -1,24 +1,34 @@
+################################################################################
+# Makefile
+################################################################################
+
+#-------------------------------------------------------------------------------
+# Environment
+#-------------------------------------------------------------------------------
+
+VENV_ROOT := .venv
+VENV := $(VENV_ROOT)/bin/activate
+ENV_FILE := .env
 
 all: venv init build
 
 venv: 
-	python -m venv .venv 
-	. .venv/bin/activate 
+	python -m venv $(VENV_ROOT)
 
 init: 
-	poetry lock && poetry install
+	. $(VENV) && . $(ENV_FILE) && poetry lock && poetry install
 
 build: 
-	./build.sh
+	. $(VENV) && . $(ENV_FILE) && ./build.sh
 
 deploy: build
-	./deploy.sh
+	. $(VENV) && . $(ENV_FILE) && ./deploy.sh
 
 run: 
-	./run.sh topics.txt
+	. $(VENV) && . $(ENV_FILE) && ./run.sh topics.txt
 
 run_docker: build
-	./run_docker.sh
+	. $(VENV) && . $(ENV_FILE) && ./run_docker.sh
 
 clean: 
 	rm -rf .venv

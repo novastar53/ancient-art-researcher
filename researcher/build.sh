@@ -1,8 +1,3 @@
 set -e # fail fast
 
-# Load the .env file
-if [ -f .env ]; then
-  export $(cat .env | xargs)
-fi
-
 docker build --platform linux/amd64  --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS -t gcr.io/$GOOGLE_CLOUD_PROJECT/researcher:latest .
