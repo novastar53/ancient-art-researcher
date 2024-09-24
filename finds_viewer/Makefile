@@ -6,10 +6,10 @@ venv:
 	. .venv/bin/activate
 
 init: 
-	. .venv/bin/activate && poetry lock && poetry install	
+	poetry lock && poetry install	
 
 build:
-	. .venv/bin/activate && ./build.sh
+	./build.sh
 
 deploy:
-	. .venv/bin/activate && ./deploy.sh
+	./deploy.sh

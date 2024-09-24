@@ -6,23 +6,19 @@ venv:
 	. .venv/bin/activate 
 
 init: 
-	. .venv/bin/activate && poetry lock
-
-install: 
-	. .venv/bin/activate && poetry install 
+	poetry lock && poetry install
 
 build: 
-	. .venv/bin/activate && ./build.sh
-
+	./build.sh
 
 deploy: build
-	. .venv/bin/activate && ./deploy.sh
+	./deploy.sh
 
 run: 
-	. .venv/bin/activate && ./run.sh topics.txt
+	./run.sh topics.txt
 
 run_docker: build
-	. .venv/bin/activate && ./run_docker.sh
+	./run_docker.sh
 
 clean: 
 	rm -rf .venv
