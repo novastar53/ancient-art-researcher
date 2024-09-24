@@ -10,7 +10,11 @@ VENV_ROOT := .venv
 VENV := $(VENV_ROOT)/bin/activate
 ENV_FILE := .env
 
-all: venv init build
+################################################################################
+# Targets
+################################################################################
+
+all: venv init build deploy
 
 venv: 
 	python -m venv $(VENV_ROOT)
@@ -31,7 +35,7 @@ run_docker: build
 	. $(VENV) && . $(ENV_FILE) && ./run_docker.sh
 
 clean: 
-	rm -rf .venv
+	rm -rf $(VENV_ROOT)
 	rm -rf dist
 
 .PHONY: all venv init build deploy run run_docker clean
