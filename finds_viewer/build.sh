@@ -8,5 +8,3 @@ if [ -f .env ]; then
 fi
 
 docker build -t gcr.io/$GOOGLE_CLOUD_PROJECT/finds-viewer:latest .
-docker push gcr.io/$GOOGLE_CLOUD_PROJECT/finds-viewer:latest
-gcloud run deploy finds-viewer --image gcr.io/$GOOGLE_CLOUD_PROJECT/finds-viewer --platform managed --region $REGION --allow-unauthenticated

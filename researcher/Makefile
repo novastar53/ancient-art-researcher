@@ -25,7 +25,7 @@ run_docker: build
 	. .venv/bin/activate && ./run_docker.sh
 
 clean: 
-	rm -rf venv
+	rm -rf .venv
 	rm -rf dist
 
-.PHONY: all build deploy run run_docker
+.PHONY: all venv init build deploy run run_docker clean
