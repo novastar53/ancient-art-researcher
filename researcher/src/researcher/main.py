@@ -27,23 +27,29 @@ def run(topics: List[str] | None = None):
         parser.add_argument("--topic", type=str, help="The research topic.")
         args = parser.parse_args()
 
-        # Randomly pick a topic from the list
         if args.topic:
             inputs = {'topic': args.topic}
         elif args.topics_filepath:
+
             topics = open(args.topics_filepath, "r").readlines()
+
+            # Pick the first topic from the list 
+            topic = topics[0]
+            logger.info(f"Researching {topic}...")
+            inputs = {'topic': topic}
+            ResearcherCrew().crew().kickoff(inputs=inputs)
+
+            # Randomly pick a topic from the list
             idx = random.randint(0, len(topics))
             topic = topics[idx]
-
             logger.info(f"Researching {topic}...")
-
             inputs = {'topic': topic}
+            ResearcherCrew().crew().kickoff(inputs=inputs)
         else:
             parser.print_help()
             return
             
 
-        ResearcherCrew().crew().kickoff(inputs=inputs)
 
 
 if __name__=="__main__":

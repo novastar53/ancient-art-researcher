@@ -20,7 +20,7 @@ venv:
 	python -m venv $(VENV_ROOT)
 
 init: 
-	. $(VENV) && . $(ENV_FILE) && poetry lock && poetry install
+	. $(VENV) && . $(ENV_FILE) && uv sync
 
 build: 
 	. $(VENV) && . $(ENV_FILE) && ./build.sh
@@ -35,4 +35,4 @@ clean:
 	rm -rf $(VENV_ROOT)
 	rm -rf dist
 
-.PHONY: all venv init build deploy run
+.PHONY: all venv init build deploy run clean
